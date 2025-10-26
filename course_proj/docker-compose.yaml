@@ -1,0 +1,42 @@
+services:
+
+  example-frontend:
+    image: example-frontend:latest
+    container_name: example-frontend
+    build:
+      context: ./example-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    depends_on:
+      - example-backend
+
+  example-backend:
+    image: example-backend:latest
+    build: ./example-backend
+    container_name: example-backend
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DB=postgres
+    depends_on:
+      - db
+
+  redis:
+    image: redis:latest
+    command: ["redis-server", "--save 60 1", "--loglevel warning"]
+
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: example
+    container_name: db-example
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+
