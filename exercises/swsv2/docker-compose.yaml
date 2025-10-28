@@ -1,9 +1,7 @@
 services:
   sws:
-    build: .
-    container_name: sws
+    image: devopsdockeruh/simple-web-service:alpine
     ports:
       - "8080:8080"
-    volumes:
-      - .:/app
+    container_name: sws
     command: ["server"]

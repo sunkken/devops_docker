@@ -1,0 +1,19 @@
+services:
+
+  backend:
+    image: backend:latest
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      - REQUEST_ORIGIN=http://localhost:5000
+    container_name: backend
+
+  frontend:
+    image: frontend:latest
+    build: ./frontend
+    ports:
+      - "5000:5000"
+    environment:
+      - ENV REACT_APP_BACKEND_URL=http://localhost:8080
+    container_name: frontend
