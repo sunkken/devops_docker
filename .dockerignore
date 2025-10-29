@@ -1,3 +1,5 @@
+server
+.gitignore
 .dockerignore
 node_modules
 README.md

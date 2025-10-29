@@ -2,23 +2,37 @@ services:
 
   redis:
     image: redis:alpine
+    container_name: dwd_redis
 
   backend:
-    image: backend:latest
+    image: dwd_backend:latest
+    restart: unless-stopped
     build: ./backend
+    depends_on:
+      - database
     ports:
       - "8080:8080"
     environment:
       - REQUEST_ORIGIN=http://localhost:5000
       - REDIS_HOST=redis
-    container_name: backend
-    restart: unless-stopped
+      - POSTGRES_HOST=database
+      - POSTGRES_PASSWORD=dwd_secret
+    container_name: dwd_backend
 
   frontend:
-    image: frontend:latest
+    image: dwd_frontend:latest
     build: ./frontend
     ports:
       - "5000:5000"
     environment:
-      - ENV REACT_APP_BACKEND_URL=http://localhost:8080
-    container_name: frontend
+      - REACT_APP_BACKEND_URL=http://localhost:8080
+    container_name: dwd_frontend
+
+  database:
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: dwd_secret
+    volumes:
+      - ./database:/var/lib/postgresql
+    container_name: dwd_database
