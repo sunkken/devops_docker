@@ -1,4 +1,5 @@
 server
+**/database/**
 .gitignore
 .dockerignore
 node_modules

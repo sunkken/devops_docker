@@ -8,6 +8,4 @@ COPY . .
 
 RUN go build
 
-ENV REQUEST_ORIGIN=http://localhost:5000
-
 ENTRYPOINT ["./server"]

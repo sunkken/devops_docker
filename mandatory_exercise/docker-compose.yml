@@ -1,33 +1,5 @@
 services:
 
-  redis:
-    image: redis:alpine
-    container_name: dwd_redis
-
-  backend:
-    image: dwd_backend:latest
-    restart: unless-stopped
-    build: ./backend
-    depends_on:
-      - database
-    ports:
-      - "8080:8080"
-    environment:
-      - REQUEST_ORIGIN=http://localhost:5000
-      - REDIS_HOST=redis
-      - POSTGRES_HOST=database
-      - POSTGRES_PASSWORD=dwd_secret
-    container_name: dwd_backend
-
-  frontend:
-    image: dwd_frontend:latest
-    build: ./frontend
-    ports:
-      - "5000:5000"
-    environment:
-      - REACT_APP_BACKEND_URL=http://localhost:8080
-    container_name: dwd_frontend
-
   database:
     image: postgres:alpine
     restart: unless-stopped
@@ -36,3 +8,37 @@ services:
     volumes:
       - ./database:/var/lib/postgresql
     container_name: dwd_database
+  
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    container_name: dwd_redis
+
+  backend:
+    image: dwd_backend:latest
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      - database
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=database
+      - POSTGRES_PASSWORD=dwd_secret
+    container_name: dwd_backend
+
+  frontend:
+    image: dwd_frontend:latest
+    build: ./frontend
+    container_name: dwd_frontend
+
+  nginx:
+    image: nginx:alpine 
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    container_name: dwd_nginx
