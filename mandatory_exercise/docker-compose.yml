@@ -30,15 +30,6 @@ services:
   frontend:
     image: dwd_frontend:latest
     build: ./frontend
-    container_name: dwd_frontend
-
-  nginx:
-    image: nginx:alpine 
     ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - frontend
-      - backend
-    container_name: dwd_nginx
+      - "80:8080"
+    container_name: dwd_frontend

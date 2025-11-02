@@ -1,13 +1,12 @@
-FROM node:20 AS build-stage 
+FROM node:20
 
 WORKDIR /usr/src/app
+
+ARG VITE_WEATHER_API_KEY
+ENV VITE_WEATHER_API_KEY=${VITE_WEATHER_API_KEY}
 
 COPY . .
 
 RUN npm ci
 
 RUN npm run build
-
-FROM nginx:1.25-alpine
-
-COPY --from=build-stage /usr/src/app/dist /usr/share/nginx/html

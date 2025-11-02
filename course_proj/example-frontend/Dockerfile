@@ -1,5 +1,3 @@
-# obs obs, since node (java) is not compiled, 
-# multi-stage build with prod starting from node doesn't help much.
 FROM node:14-alpine AS build
 
 WORKDIR /usr/src/app
