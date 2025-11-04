@@ -5,7 +5,6 @@ import countryService from './services/countries'
 import weatherService from './services/weather'
 
 function App() {
-  const weather_api_key = import.meta.env.VITE_WEATHER_API_KEY
   const weather_icon_base_url = "https://openweathermap.org/img/wn/"
   const [allCountries, setAllCountries] = useState([])
   const [filterName, setFilterName] = useState('')
@@ -50,7 +49,7 @@ function App() {
     const [lat, lng] = countryDetails.latlng
 
     weatherService
-      .getWeather(lat, lng, weather_api_key)
+      .getWeather(lat, lng)
       .then(data => {
         console.log('Fetched weather data:', data)
         setWeather(data)

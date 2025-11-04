@@ -1,0 +1,24 @@
+# Node dependencies (reinstalled in the build)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Local environment variables
+.env
+.env.*       # if you have .env.development, etc.
+
+# Vite cache
+.vite
+.cache
+
+# IDE and OS files
+.DS_Store
+*.swp
+*.swo
+.idea
+.vscode
+*.log
+
+# Docker files (if you have them)
+Dockerfile.*
+docker-compose.*
